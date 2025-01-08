@@ -37,13 +37,17 @@ class Usercontroller extends Controller
     }
 
     public function showContacts(){
-        $contacts = Post::all();
+        $contacts = Post::paginate(5);
         return view('show_all_data', compact('contacts'));
     }
 
     public function updateformshow($id){
         $post = Post::findOrFail($id);
         return view('update_form', compact('post'));
+    }
+    public function searchdata(Request $request){
+            $studentdata=Post::where('name','like',"%$request->search%")->get();
+            return view('show_all_data',['contacts'=>$studentdata]);
     }
 
     public function updatedata(Request $request, $id){
@@ -104,6 +108,16 @@ public function loginsubmit(Request $request){
 
 }
 
+public function deletemultiple(Request $request){
+    $data=Post::destroy($request->id);
+    if($data){
+        return redirect('showdetails');
+    }
+    else{
+        return "Student Record is not deleted";
+    }
+
+}
 public function homes(){
     return view('home');
 }

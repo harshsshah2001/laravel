@@ -22,8 +22,13 @@ Route::put('/update/{id}',[Usercontroller::class,'updatedata'])->name('posts.upd
 
 //delete user route
 Route::delete('/delete/{id}', [Usercontroller::class, 'deleteData'])->name('data.destroy');
-
 Route::get('/show_data',[Usercontroller::class,'showContacts'])->name('show_all_data');
+
+//Delete Multiple Records
+Route::post('delete-multi',[Usercontroller::class,'deletemultiple']);
+
+//search Route
+Route::get('/search',[Usercontroller::class,'searchdata']);
 
 //login Route
 Route::get('/login',[Usercontroller::class,'loginpage'])->name('login');
@@ -40,4 +45,7 @@ Route::middleware(['auth'])->group(function () {
  Route::get('/landing_here',[Usercontroller::class,'landing']);
 
 });
+
+//it is used for localization.
+Route::view('/welcome', 'welcome');
 

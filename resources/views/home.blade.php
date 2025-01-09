@@ -163,12 +163,14 @@
         <a href="">About</a>
         <a href="">Services</a>
         <a href="">Contact</a>
- @if (session('email'))
-        <p style="color: #fff">Welcome, {{session('email')}}</p>
+ @if (session('user_name'))
+        <a style="color: #fff;cursor:none;margin-left:930px">Welcome, {{session('user_name')}}</a>
         @else
-        <p style="color: #fff">Session are not set</p>
-        @endif    </nav>
+        <a style="color: #fff">Session are not set</a>
+        @endif    
+    </nav>
 
+        
     <!-- Hero Section -->
     <div class="hero-section">
         <h2 style="color: #333">Your One-Stop Solution</h2>

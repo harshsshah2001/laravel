@@ -25,7 +25,7 @@ Route::delete('/delete/{id}', [Usercontroller::class, 'deleteData'])->name('data
 Route::get('/show_data',[Usercontroller::class,'showContacts'])->name('show_all_data');
 
 //Delete Multiple Records
-Route::post('delete-multi', [UserController::class, 'deletemultiple'])->name('delete-multi');
+Route::delete('delete-multi', [UserController::class, 'deletemultiple'])->name('delete-multi');
 
 //search Route
 Route::get('/search',[Usercontroller::class,'searchdata']);
@@ -35,16 +35,17 @@ Route::get('/login',[Usercontroller::class,'loginpage'])->name('login');
 Route::post('/login1',[Usercontroller::class,'loginsubmit'])->name('login.submit');
 
 //Home Route
-Route::get('/home', [UserController::class, 'homes'])->name('homed');
 
 //For check API route
 Route::get('/api_check',[Usercontroller::class,'api']);
 
 Route::middleware(['auth'])->group(function () {
-
- Route::get('/landing_here',[Usercontroller::class,'landing']);
-
+    
+    Route::get('/home', [UserController::class, 'homes'])->name('homed');
+    
 });
+
+Route::get('/landing_here',[Usercontroller::class,'landing']);
 
 //it is used for localization.
 Route::view('/welcome', 'welcome');

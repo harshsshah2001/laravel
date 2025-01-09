@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\DB;
 
 class Usercontroller extends Controller
 {
@@ -33,6 +34,7 @@ class Usercontroller extends Controller
             'address' => $validate['address'],
             'image' => $imagePath,
         ]);
+        session()->flash('submit','Your Data is Registered Successfully');
         return redirect()->route('login');
     }
 
@@ -99,6 +101,16 @@ public function loginsubmit(Request $request){
         $user = Post::where('email', $email)->first();
 
         $request->session()->put('email',$request->input('email'));
+
+
+        $alldata = DB::table('posts')->where('email', $email)->first();
+
+        if ($alldata) {
+            $name = $alldata->name;
+            session()->put('user_name', $name);
+        }
+
+
 
         if($user && Hash::check($password,$user->password)){
             return redirect()->route('homed');

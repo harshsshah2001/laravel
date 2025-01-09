@@ -12,6 +12,15 @@ class Post extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+
+    function getEmailAttribute($val){
+        return ucfirst($val);
+    }
+
+    function setPhoneAttribute($val){
+            return $this->attributes['phone']="+91-".$val;
+    }
+
     /**
      * The attributes that are mass assignable.
      *

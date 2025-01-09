@@ -25,7 +25,7 @@ Route::delete('/delete/{id}', [Usercontroller::class, 'deleteData'])->name('data
 Route::get('/show_data',[Usercontroller::class,'showContacts'])->name('show_all_data');
 
 //Delete Multiple Records
-Route::post('delete-multi',[Usercontroller::class,'deletemultiple']);
+Route::post('delete-multi', [UserController::class, 'deletemultiple'])->name('delete-multi');
 
 //search Route
 Route::get('/search',[Usercontroller::class,'searchdata']);

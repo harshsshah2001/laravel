@@ -46,9 +46,12 @@ class Usercontroller extends Controller
         return view('update_form', compact('post'));
     }
     public function searchdata(Request $request){
-            $studentdata=Post::where('name','like',"%$request->search%")->get();
-            return view('show_all_data',['contacts'=>$studentdata]);
-    }
+        $request->validate([
+            'search' => 'nullable|string|max:255',
+        ]);
+        $studentdata = Post::where('name', 'like', '%' . $request->search . '%')->get();
+        return view('show_all_data', ['contacts' => $studentdata]);
+  }
 
     public function updatedata(Request $request, $id){
         $validated = $request->validate([
@@ -108,16 +111,24 @@ public function loginsubmit(Request $request){
 
 }
 
-public function deletemultiple(Request $request){
-    $data=Post::destroy($request->id);
-    if($data){
-        return redirect('showdetails');
-    }
-    else{
-        return "Student Record is not deleted";
-    }
+public function deletemultiple(Request $request)
+{
+    // Check if ids are passed
+    if ($request->has('ids')) {
+        // Destroy multiple records
+        $data = Post::destroy($request->ids);
 
+        // Check if deletion is successful
+        if ($data) {
+            return redirect()->route('showdetails')->with('success', 'Selected records deleted successfully');
+        } else {
+            return redirect()->route('showdetails')->with('error', 'Failed to delete records');
+        }
+    } else {
+        return redirect()->route('showdetails')->with('error', 'No records selected');
+    }
 }
+
 public function homes(){
     return view('home');
 }

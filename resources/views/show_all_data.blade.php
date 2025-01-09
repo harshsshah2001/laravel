@@ -13,6 +13,55 @@
     </script>
 
     <style>
+         .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        list-style: none;
+        padding: 0;
+        margin: 20px 0;
+                    }
+
+    /* Pagination Items */
+    .pagination li {
+        margin: 0 5px;
+    }
+
+    /* Links */
+    .pagination a,
+    .pagination span {
+        display: inline-block;
+        padding: 8px 12px;
+        font-size: 14px;
+        color: #4CAF50;
+        text-decoration: none;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
+
+    /* Hover Effect */
+    .pagination a:hover {
+        background-color: #4CAF50;
+        color: #fff;
+        border-color: #4CAF50;
+    }
+
+    /* Active State */
+    .pagination .active span {
+        background-color: #4CAF50;
+        color: #fff;
+        border-color: #4CAF50;
+    }
+
+    /* Disabled State */
+    .pagination .disabled span {
+        color: #bbb;
+        background-color: #f9f9f9;
+        border-color: #ddd;
+        cursor: not-allowed;
+    }
         .main-search-input {
             display: flex;
             align-items: center;
@@ -202,68 +251,71 @@
 
     <div class="table-container">
         <h2>User's Information</h2>
-        <form action="search" method="GET">
+
+        {{-- Search Bar --}}
+        <form action="/search" method="GET">
             <div class="main-search-input">
                 <div class="main-search-input-item">
-                    <input type="text" value="" placeholder="Search by name...">
+                    <input type="text" name="search" value="" placeholder="Search by name...">
                 </div>
-                <button class="main-search-button">Search</button>
+                <button type="submit" class="main-search-button">Search</button>
             </div>
         </form>
-        <form action="">
+        
+        {{-- Delete Multiple --}}
+        <form action="{{ route('delete-multi') }}" method="POST">
             @csrf
-            <button>Delete</button>
-        <table class="beautiful-table">
-            <thead>
-                <tr>
-                    <th>Delete Multiples</th>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Address</th>
-                    <th>Image</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($contacts as $index => $contact)
+            <button type="submit">Delete Selected</button>
+            <table class="beautiful-table">
+                <thead>
                     <tr>
-                        <td><input type="checkbox" name="ids[]" value="{{$contact->id}}" id=""></td>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $contact->name }}</td>
-                        <td>{{ $contact->email }}</td>
-                        <td>{{ $contact->phone }}</td>
-                        <td>{{ $contact->address }}</td>
-
-                        <td>
-                            @if ($contact->image)
-                                <img src="{{ asset('storage/' . $contact->image) }}" alt="User Image"
-                                    style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
-                            @else
-                                <span>No Image</span>
-                            @endif
-                        </td>
-                        <td>
-                            <!-- Update Button -->
-                            <a href="{{ route('updateform', $contact->id) }}">
-                                <button class="action-btn update-btn">Update</button>
-                            </a>
-
-                            <!-- Delete Button (with confirmation) -->
-                            <form action="{{ route('data.destroy', $contact->id) }}" method="POST"
-                                style="display: inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="action-btn delete-btn"
-                                    onclick="return confirm('Are you sure you want to delete this contact?')">Delete</button>
-                            </form>
-                        </td>
+                        <th>Delete Multiples</th>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Address</th>
+                        <th>Image</th>
+                        <th>Actions</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </form><br><br>
+                </thead>
+                <tbody>
+                    @foreach ($contacts as $index => $contact)
+                        <tr>
+                            <td><input type="checkbox" name="ids[]" value="{{ $contact->id }}" id=""></td>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $contact->name }}</td>
+                            <td>{{ $contact->email }}</td>
+                            <td>{{ $contact->phone }}</td>
+                            <td>{{ $contact->address }}</td>
+                            <td>
+                                @if ($contact->image)
+                                    <img src="{{ asset('storage/' . $contact->image) }}" alt="User Image"
+                                        style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+                                @else
+                                    <span>No Image</span>
+                                @endif
+                            </td>
+                            <td>
+                                <!-- Update Button -->
+                                <a href="{{ route('updateform', $contact->id) }}">
+                                    <button class="action-btn update-btn">Update</button>
+                                </a>
+                                <!-- Delete Button (with confirmation) -->
+                                <form action="{{ route('data.destroy', $contact->id) }}" method="POST"
+                                    style="display: inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="action-btn delete-btn"
+                                        onclick="return confirm('Are you sure you want to delete this contact?')">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </form>
+        <br><br>
         {{-- for pagination --}}
         {{ $contacts->links() }}
     </div>

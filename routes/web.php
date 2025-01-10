@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Usercontroller;
+use App\Http\Controllers\Mailcontroller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\userauthentication;
 use Illuminate\Support\Facades\Auth;
@@ -40,9 +41,9 @@ Route::post('/login1',[Usercontroller::class,'loginsubmit'])->name('login.submit
 Route::get('/api_check',[Usercontroller::class,'api']);
 
 Route::middleware(['auth'])->group(function () {
-    
+
     Route::get('/home', [UserController::class, 'homes'])->name('homed');
-    
+
 });
 
 Route::get('/landing_here',[Usercontroller::class,'landing']);
@@ -50,3 +51,4 @@ Route::get('/landing_here',[Usercontroller::class,'landing']);
 //it is used for localization.
 Route::view('/welcome', 'welcome');
 
+Route::get('harsh', [UserController::class, 'harsh']);

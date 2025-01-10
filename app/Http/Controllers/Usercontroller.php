@@ -8,12 +8,24 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\welcomeemail;
 
 class Usercontroller extends Controller
 {
+
+    // it is used for only testing purpose
+    public function harsh(){
+        $age=40;
+        return view('harsh',['harshsage'=>$age]);
+    }
+
+    //show register data form
     public function showForm(){
         return view('register');
     }
+
+    //after registered data form
     public function registerdata(Request $request){
         $validate = $request->validate([
             'name' => 'required|string|max:255',
@@ -34,6 +46,13 @@ class Usercontroller extends Controller
             'address' => $validate['address'],
             'image' => $imagePath,
         ]);
+
+        $useremail=$validate['email'];
+        $email = $useremail;
+        $msg = "Dummy Mail by harsh";
+        $subject ="Laravel Mail";
+
+        Mail::to($email)->send(new welcomeemail($msg,$subject));
         session()->flash('submit','Your Data is Registered Successfully');
         return redirect()->route('login');
     }
@@ -125,12 +144,11 @@ public function loginsubmit(Request $request){
 
 public function deletemultiple(Request $request)
 {
-    // Check if ids are passed
+
     if ($request->has('ids')) {
-        // Destroy multiple records
         $data = Post::destroy($request->ids);
 
-        // Check if deletion is successful
+
         if ($data) {
             return redirect()->route('showdetails')->with('success', 'Selected records deleted successfully');
         } else {

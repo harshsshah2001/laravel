@@ -1,4 +1,4 @@
-<!-- resources/views/contact-form.blade.php -->
+    <!-- resources/views/contact-form.blade.php -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -103,7 +103,7 @@
             <div class="alert alert-success">
                 {{ session('submit') }}
             </div>
-                
+
             @endif
 
             <div class="input-group">
